@@ -21,7 +21,7 @@ ARCH= -gencode arch=compute_35,code=sm_35 \
       -gencode arch=compute_50,code=[sm_50,compute_50] \
       -gencode arch=compute_52,code=[sm_52,compute_52] \
 	  -gencode arch=compute_61,code=[sm_61,compute_61] \
-	  -gencode arch=compute_86,code=[sm_86,compute_86]
+	#   -gencode arch=compute_86,code=[sm_86,compute_86]
 
 OS := $(shell uname)
 
@@ -57,6 +57,26 @@ OS := $(shell uname)
 
 # For Tesla GA10x cards, RTX 3090, RTX 3080, RTX 3070, RTX A6000, RTX A40 uncomment:
 # ARCH= -gencode arch=compute_86,code=[sm_86,compute_86]
+GPU_TYPE := $(shell nvidia-smi | grep -o -m1 3090)
+ifeq ($(GPU_TYPE), 3090)
+ARCH+= -gencode arch=compute_86,code=[sm_86,compute_86]
+endif
+
+GPU_TYPE := $(shell nvidia-smi | grep -o -m1 3080)
+ifeq ($(GPU_TYPE), 3080)
+ARCH+= -gencode arch=compute_86,code=[sm_86,compute_86]
+endif
+
+GPU_TYPE := $(shell nvidia-smi | grep -o -m1 3070)
+ifeq ($(GPU_TYPE), 3070)
+ARCH+= -gencode arch=compute_86,code=[sm_86,compute_86]
+endif
+
+GPU_TYPE := $(shell nvidia-smi | grep -o -m1 A5000)
+ifeq ($(GPU_TYPE), A5000)
+ARCH+= -gencode arch=compute_86,code=[sm_86,compute_86]
+endif
+
 
 
 VPATH=./src/
